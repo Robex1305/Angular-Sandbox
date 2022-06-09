@@ -1,0 +1,32 @@
+/* You can add global styles to this file, and also import other style files */
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    justify-content: center;
+}
+
+.container {
+    background-color: whitesmoke;
+    box-shadow: 0px 0px 5px lightgray;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    width: auto;
+}
+
+.vertical {
+    flex-direction: column;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+/*
+
+Allows to display subcontent in grid layout with auto adjusting of width
+
+*/
+.grid-display {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+}

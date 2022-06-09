@@ -1,0 +1,7 @@
+
+
+    <div class="grid-display">
+        <div class="container grid-display" *ngIf="isLoaded">
+            <app-card *ngFor="let event of events" [event]="event" ></app-card>
+        </div>
+    </div>
