@@ -12,5 +12,10 @@ export class AppComponent implements OnInit{
 
   }
     ngOnInit(): void {
+      if(!document.cookie.includes('SameSite')){
+        console.log('Adding SameSite Cookie')
+        document.cookie += 'SameSite=Lax'
+      }
+      console.log(document.cookie)
     }
 }

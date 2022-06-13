@@ -7,8 +7,6 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CardFooterComponent implements OnInit {
 
-  @Input() value? : String
-  
   constructor() { }
 
   ngOnInit(): void {

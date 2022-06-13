@@ -1,7 +1,9 @@
 export interface IEvent {
-    title: String
-    subtitle : String
-    body: String
-    footer : String
+    id: string
+    title: string
+    subtitle : string
+    body: string
+    date : string
+    labels : string[]
 
 }

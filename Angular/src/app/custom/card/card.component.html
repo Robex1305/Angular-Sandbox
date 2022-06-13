@@ -1,6 +1,10 @@
 <div class="container vertical card">
-    <app-card-title [value]="event.title"></app-card-title>
-    <app-card-subtitle [value]="event.subtitle"></app-card-subtitle>
-    <app-card-body [value]="event.body"></app-card-body>
-    <app-card-footer [value]="event.footer"></app-card-footer>
+    <app-card-title>{{event.title}}</app-card-title>
+    <app-card-subtitle>{{event.subtitle}}</app-card-subtitle>
+    <app-card-body>{{event.body}}</app-card-body>
+    <app-card-footer>
+        {{event.date}}
+        <br>
+        Catégorie(s) : <span *ngFor="let label of event.labels">{{label}} </span>
+    </app-card-footer>
 </div>

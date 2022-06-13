@@ -1,7 +1,24 @@
 
-
+<div class="vertical">
+    <div class="container vertical">
+        <div class="grid-display">
+            <form [formGroup]="filterForm" class="container" (ngSubmit)="search()">
+            <select class="custom-input" (change)="changeLabel($event); search()" formControlName="label" name="filter" placeholder="Search in tags...">
+                <option *ngFor="let label of availableLabels" [ngValue]="label">{{label}}</option>
+            </select>
+            </form>
+        </div>
+        <div>
+            <h3 style='margin-left: 20px' *ngIf="eventCount > 0">{{eventCount}} event(s) found</h3>
+            <h3 style='margin-left: 20px' *ngIf="eventCount == 0">No event found</h3>
+            <h3 style='margin-left: 20px' *ngIf="eventCount == -1">Searching...</h3>
+        </div>
+   
+    </div>
     <div class="grid-display">
         <div class="container grid-display" *ngIf="isLoaded">
-            <app-card *ngFor="let event of events" [event]="event" ></app-card>
+            <app-card *ngFor="let event of events" [event]="event" class="clickable" routerLink="{{event.id}}"></app-card>
         </div>
     </div>
+    <div class="container clickable" (click)="loadMore()" *ngIf="hasMore">➕ Load more</div>
+</div>

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,10 +14,14 @@ import { CardBodyComponent } from './custom/card-body/card-body.component';
 import { CardFooterComponent } from './custom/card-footer/card-footer.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { EventService } from './event.service';
+import { EventDetailsComponent } from './event-details/event-details.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes : Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'events', component: EventsComponent},
+  {path: 'events', component: EventsComponent},
+  {path: 'events/:id', component: EventDetailsComponent},
   {path: 'about', component: AboutComponent},
   {path: '**', redirectTo: '/home'}
 ]
@@ -33,15 +37,20 @@ const routes : Routes = [
     CardSubtitleComponent,
     CardBodyComponent,
     CardFooterComponent,
+    EventDetailsComponent,
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot(routes),
     HttpClientModule
   ],
   
-  providers: [],
+  providers: [
+    {provide: LOCALE_ID, useValue: 'fr' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
