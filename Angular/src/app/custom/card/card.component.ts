@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IEvent } from 'src/app/class/IEvent';
 
 @Component({
@@ -8,12 +8,16 @@ import { IEvent } from 'src/app/class/IEvent';
 })
 export class CardComponent implements OnInit {
 
+  @Output() subEmitter : EventEmitter<boolean> = new EventEmitter()
   @Input() event! : IEvent;
-  constructor() {
-    
-   }
+  @Input() subscribed : boolean = false;
+  constructor() { }
 
   ngOnInit(): void {
+  }
+
+  saveEvent(){
+    this.subEmitter.emit(this.subscribed)
   }
 
 }

@@ -31,7 +31,7 @@ export class EventService {
   public getEvents(page:number, labels:string[]) : Observable<any[]>{
     this.eventCount = 0
     let labelParams = ""
-    if(labels.length){
+    if(labels[0]){
       labelParams = "&label="
       labels.forEach((v, i) => {
         if(i === 0){

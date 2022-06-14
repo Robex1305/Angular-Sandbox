@@ -1,10 +1,11 @@
-<div class="container vertical card">
-    <app-card-title>{{event.title}}</app-card-title>
+<div class="container vertical card" [ngStyle]="{'background-color': subscribed ? 'green' : 'orange'}">
+    <app-card-title class="clickable" routerLink="{{event.id}}" >{{event.title}}</app-card-title >
     <app-card-subtitle>{{event.subtitle}}</app-card-subtitle>
     <app-card-body>{{event.body}}</app-card-body>
     <app-card-footer>
         {{event.date}}
         <br>
         Catégorie(s) : <span *ngFor="let label of event.labels">{{label}} </span>
+        <button (click)="saveEvent()">SAVE</button>
     </app-card-footer>
 </div>

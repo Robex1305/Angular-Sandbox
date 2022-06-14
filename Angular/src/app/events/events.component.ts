@@ -16,6 +16,8 @@ export class EventsComponent implements OnInit {
   })
   availableLabels : string[] = []
   events : IEvent[] = []
+  subscribedEvents : IEvent[] = []
+  
   isLoaded? : boolean;
   event? : IEvent;
   eventCount : number = 0;
@@ -23,9 +25,55 @@ export class EventsComponent implements OnInit {
   pageCount:number[] = []
   hasMore:boolean = false;
   labels:string[] = []
+  subFilterEnabled: boolean = false;
   constructor(private eventService : EventService, private formBuilder : FormBuilder) {
    }
 
+   isSubbed(event:IEvent) : boolean{
+      let subbed = false;
+      this.subscribedEvents.forEach(e => {
+        if(e.id === event.id){
+          subbed = true;
+        }
+      })
+      return subbed;
+   }
+
+
+
+   subFilter(event:IEvent){
+    if(!this.subFilterEnabled){
+      return true;
+    }
+
+    if(this.isSubbed(event)){
+      return true;
+    }
+
+    return false
+   }
+
+   hasSubbed(subbed: boolean, selectedEvent:IEvent){
+    if(!subbed){
+      this.subscribedEvents.push(selectedEvent)
+      console.log("Pushing event " + selectedEvent.id)
+    }
+    else{
+      console.log("Removing event " + selectedEvent.id)
+      let toDelete = -1;
+      this.subscribedEvents.forEach((v,i)=>{
+        if(v.id===selectedEvent.id){
+          toDelete = i
+        }
+      })
+      
+      if(toDelete  != -1){
+        this.subscribedEvents.splice(toDelete, 1);
+      }
+    }
+    localStorage.setItem("subbed", JSON.stringify(this.subscribedEvents))
+    
+   }
 
    changeLabel(event:any){
     this.filterForm.get('label')?.setValue(event.target.value)
@@ -36,13 +84,15 @@ export class EventsComponent implements OnInit {
     this.page = 0
     this.eventCount = -1
     let formLabelValue = this.filterForm.get('label')
-    if(formLabelValue && formLabelValue.value){
-     if(formLabelValue.value.length > 1){
-      this.events = []
-      this.labels = formLabelValue.value.split(' ');
-      this.loadEvents();
-     }
+    if(formLabelValue?.value){
+      this.labels = [formLabelValue.value.split(' ')[1]]
+      console.log("label: " +  [formLabelValue.value.split(' ')[1]])
    }
+   else {
+    this.labels = []
+   }
+   this.events = []
+    this.loadEvents();
   }
 
   displayDetail(event:IEvent){
@@ -56,14 +106,15 @@ export class EventsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscribedEvents = localStorage.getItem("subbed") ? JSON.parse(<string> localStorage.getItem("subbed")) : []
     this.eventCount = -1  
     console.log("loading events at page " + this.page + " width labels " + this.labels)
     this.isLoaded = false
     this.loadEvents()
     this.eventService.getLabels().subscribe(data => {
       console.log(data)
+      this.availableLabels.push('')
       for(let key of Object.keys(data)){
-        console.log("The key value is " + key)
         this.availableLabels.push(key)
       }
     })
@@ -75,14 +126,12 @@ export class EventsComponent implements OnInit {
         this.events.push(EventService.parse(e))
       })
       this.eventCount = this.eventService.eventCount;
-      this.pageCount = this.eventCount < 50 ? [1] : Array.from(Array(this.eventCount/50).keys())
-      console.log(this.eventCount + " events found")
-      console.log(this.page + "<" + (this.pageCount.length -1) + "=" +(this.page < this.pageCount.length -1) )
+      this.pageCount = this.eventCount < 50 ? [0] : Array.from(Array(Math.round(this.eventCount/50)).keys())
+      
       if(this.page < this.pageCount.length -1){
         this.hasMore = true;
       }
       this.isLoaded = true
-      console.log("Page is loaded! (" + this.isLoaded + ")")
     });
   }
 }

@@ -6,6 +6,8 @@
             <select class="custom-input" (change)="changeLabel($event); search()" formControlName="label" name="filter" placeholder="Search in tags...">
                 <option *ngFor="let label of availableLabels" [ngValue]="label">{{label}}</option>
             </select>
+            <label for="showSub">Show sub only</label>
+            <input type="checkbox" [checked]="subFilterEnabled" (change)="subFilterEnabled = !subFilterEnabled"  name="showSub"/>
             </form>
         </div>
         <div>
@@ -17,7 +19,9 @@
     </div>
     <div class="grid-display">
         <div class="container grid-display" *ngIf="isLoaded">
-            <app-card *ngFor="let event of events" [event]="event" class="clickable" routerLink="{{event.id}}"></app-card>
+            <ng-container *ngFor="let event of events">
+            <app-card  [event]="event" [subscribed]="isSubbed(event)" (subEmitter)="hasSubbed($event, event)" *ngIf="subFilter(event)"></app-card>
+            </ng-container>
         </div>
     </div>
     <div class="container clickable" (click)="loadMore()" *ngIf="hasMore">➕ Load more</div>
